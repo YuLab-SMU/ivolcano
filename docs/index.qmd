@@ -89,18 +89,19 @@ top_eg <- df$entrez[order(df$padj)][1:50]
 library(fanyi)
 gs = gene_summary(top_eg)
 gs$summary_cn <- tencent_translate(gs$summary)
+head(gs)
 ```
 
 
 定义`onclick`函数，可以选中多个columns的信息进行展示，这里用了基因的描述（全称）和翻译后的中文summary信息。`onclick_fanyi`会按照我们的要求，返回一个函数定义，可以给我们传入`ivolcano`。
 
 ```{r ivolcano-fanyi, fig.width=10, fig.height=6}
-onclick_fun <- onclick_fanyi(gs, c("description", "summary_cn"))
+onclick_fun <- onclick_fanyi(gs, c("description", "summary", "summary_cn"))
 
 ivolcano(df,
-             logFC_col="log2FoldChange",
-             pval_col="padj",
-             gene_col="symbol",
-             top_n=5,
-             onclick_fun = onclick_fun)
+        logFC_col="log2FoldChange",
+        pval_col="padj",
+        gene_col="symbol",
+        top_n=5,
+        onclick_fun = onclick_fun)
 ```
