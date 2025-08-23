@@ -1,0 +1,106 @@
+---
+title: "Interactive Volcano Plot"
+format: 
+    html:
+        theme: cosmo
+        fontsize: 1.1em
+        linestretch: 1.7
+author: "Guangchuang Yu\\
+
+        School of Basic Medical Sciences, Southern Medical University"
+date: "`r Sys.Date()`"
+---
+
+```{r results='hide', echo=FALSE, message=FALSE}
+library(yulab.utils)
+library(airway)
+library(DESeq2)
+library(org.Hs.eg.db)
+library(AnnotationDbi)
+```
+
+
+## 示例数据和差异分析
+
+```{r}
+library(airway)
+library(DESeq2)
+library(org.Hs.eg.db)
+library(AnnotationDbi)
+
+data("airway")
+
+# 提取 counts 矩阵并去掉总计数 <=1 的基因
+counts_mat <- assay(airway)
+airway <- airway[rowSums(counts_mat) > 1, ]
+
+# 构建 DESeq2 数据集并分析差异表达
+dds <- DESeqDataSet(airway, design = ~ cell + dex)
+dds <- DESeq(dds)
+res <- results(dds, contrast = c("dex", "trt", "untrt"))
+
+# 转为 data.frame 并加 gene symbol
+df <- as.data.frame(res)
+df$gene_id <- rownames(df)
+df$symbol <- mapIds(org.Hs.eg.db, 
+                    keys = df$gene_id,
+                    column = "SYMBOL", 
+                    keytype = "ENSEMBL", 
+                    multiVals = "first")
+df <- df[!is.na(df$symbol), ]
+
+head(df)
+```
+
+## 交互式可视化火山图
+
+默认画的是可交互式的图，如果传入参数`interactive = FALSE`，则会出普通的`ggplot`静态图。
+
+
+可交互图中，鼠标悬停会显示基因名、logFC和adjusted P values等信息。
+
+`onclick_fun`传入一个函数，可以定义点击点（基因）后的行为，这里传入`onclick_genecards`，会跳转到GeneCards网站。
+
+
+
+```{r ivocano, fig.width=10, fig.height=6}
+library(ivolcano)
+
+ivolcano(df,
+        logFC_col = "log2FoldChange",
+        pval_col = "padj",
+        gene_col = "symbol",
+        top_n = 5,
+        onclick_fun=onclick_genecards)
+```
+
+
+我们还可以通过`r CRANpkg("fanyi")`来检索NCBI上的基因信息，拿来在图上展示。这里还将基因的'summary'信息翻译成中文。
+
+```{r}
+df$entrez <- mapIds(org.Hs.eg.db, 
+                    keys = df$gene_id,
+                    column = "ENTREZID", 
+                    keytype = "ENSEMBL", 
+                    multiVals = "first")
+
+top_eg <- df$entrez[order(df$padj)][1:50]
+
+library(fanyi)
+gs = gene_summary(top_eg)
+gs$summary_cn <- tencent_translate(gs$summary)
+```
+
+
+定义`onclick`函数，可以选中多个columns的信息进行展示，这里用了基因的描述（全称）和翻译后的中文summary信息。`onclick_fanyi`会按照我们的要求，返回一个函数定义，可以给我们传入`ivolcano`。
+
+```{r ivolcano-fanyi, fig.width=10, fig.height=6}
+onclick_fun <- onclick_fanyi(gs, c("description", "summary_cn"))
+
+ivolcano(df,
+             logFC_col="log2FoldChange",
+             pval_col="padj",
+             gene_col="symbol",
+             top_n=5,
+             onclick_fun = onclick_fun)
+```
