@@ -1,2 +1,6 @@
 ^ivolcano\.Rproj$
 ^\.Rproj\.user$
+^LICENSE\.md$
+Makefile
+docs
+index.qmd
