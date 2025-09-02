@@ -36,6 +36,17 @@
 #' @importFrom rlang sym
 #' @importFrom rlang .data
 #' @export
+#' @examples
+#' # example data
+#' f <- system.file('extdata/airway.rds', package='ivolcano')
+#' df <- readRDS(f)
+#' # plot
+#' ivolcano(df,
+#'         logFC_col = "log2FoldChange",
+#'         pval_col = "padj",
+#'         gene_col = "symbol",
+#'         top_n = 5,
+#'         onclick_fun=onclick_genecards)
 #' @author Guangchuang Yu
 ivolcano <- function(
   data,

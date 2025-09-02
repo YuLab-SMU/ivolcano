@@ -1,6 +1,6 @@
 Package: ivolcano
 Title: Interactive Volcano Plot
-Version: 0.0.0.9000
+Version: 0.0.1
 Authors@R: c(
        person("Guangchuang", "Yu", 
               email = "guangchuangyu@gmail.com", 
@@ -9,12 +9,18 @@ Authors@R: c(
        )
     )
 Description: Generate interactive volcano plot to allow exploring gene expression data.
+Depends: R (>= 4.1.0)
 Imports:
     dplyr,
     ggplot2,
     ggiraph,
     ggrepel,
     rlang
+Suggests:
+    quarto,
+    yulab.utils
+VignetteBuilder:
+    quarto
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
