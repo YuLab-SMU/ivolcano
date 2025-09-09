@@ -8,7 +8,7 @@ Authors@R: c(
               comment = c(ORCID = "0000-0002-6485-8781")
        )
     )
-Description: Generate interactive volcano plot to allow exploring gene expression data.
+Description: Generate interactive volcano plots for exploring gene expression data. Built with 'ggplot2', the plots are rendered interactive using 'ggiraph', enabling users to hover over points to dispaly detailed information or click to triger custom actions.  
 Depends: R (>= 4.1.0)
 Imports:
     dplyr,
