@@ -1,0 +1,54 @@
+---
+output:
+  md_document:
+    variant: gfm
+html_preview: false
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+
+# ivolcano: Interactive Volcano Plot
+
+
+`r badger::badge_license("Artistic-2.0")`
+`r badger::badge_github_version("YuLab-SMU/ivolcano", "blue")`
+`r badger::badge_code_size("YuLab-SMU/ivolcano")`
+`r badger::badge_last_commit("YuLab-SMU/ivolcano", 'devel')`
+`r badger::badge_cran_release('ivolcano', 'green')`
+`r badger::badge_cran_download('ivolcano', 'grand-total', 'green')`
+
+
+```{r comment="", echo=FALSE, results='asis'}
+cat(packageDescription('ivolcano')$Description)
+```
+
+
+## :writing_hand: Authors
+
+Guangchuang YU
+
+School of Basic Medical Sciences, Southern Medical University
+
+<https://yulab-smu.top>
+
+
+## :arrow_double_down: Installation
+
+Get the released version from CRAN:
+
+```r
+install.packages("ivolcano")
+```
+
+Or the development version from github:
+
+```r
+## install.packages("remotes")
+remotes::install_github("YuLab-SMU/ivolcano")
+```
+
+
+## :book: Vignette
+
+For more details, please refer to the [online vignette](https://yulab-smu.top/ivolcano).
