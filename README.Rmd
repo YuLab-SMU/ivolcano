@@ -11,7 +11,7 @@ html_preview: false
 # ivolcano: Interactive Volcano Plot
 
 
-`r badger::badge_license("Artistic-2.0")`
+`r badger::badge_license("license-GPL (>= 3)")`
 `r badger::badge_github_version("YuLab-SMU/ivolcano", "blue")`
 `r badger::badge_code_size("YuLab-SMU/ivolcano")`
 `r badger::badge_last_commit("YuLab-SMU/ivolcano", 'devel')`
