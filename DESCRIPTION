@@ -1,6 +1,6 @@
 Package: ivolcano
 Title: Interactive Volcano Plot
-Version: 0.0.1
+Version: 0.0.2
 Authors@R: c(
        person("Guangchuang", "Yu", 
               email = "guangchuangyu@gmail.com", 

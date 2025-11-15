@@ -1,5 +1,5 @@
 #' interactive volcano plot
-#' 
+#'
 #' @title ivolcano
 #' @param data A data frame that contains minimal information with gene id, logFC and adjusted P values
 #' @param logFC_col column name in 'data' that stored the logFC values
@@ -11,8 +11,8 @@
 #' @param pval_cutoff cutoff of the adjusted P values
 #' @param logFC_cutoff cutoff of the logFC values
 #' @param top_n top N genes to display the labels (gene ID)
-#' @param label_mode one of 'all' or 'separate' (default). 
-#'    If label_mode = 'all', top_n genes with minimal p values will be displayed, 
+#' @param label_mode one of 'all' or 'separate' (default).
+#'    If label_mode = 'all', top_n genes with minimal p values will be displayed,
 #'    otherwise, top_n up-regulated and top_n down-regulated genes will be displayed.
 #' @param fontface one of 'plain', 'bold', 'italic' (default) and their combination, e.g. 'bold.italic'
 #' @param label_sig_only whether filter significant genes before subset 'top_n' genes
@@ -66,7 +66,7 @@ ivolcano <- function(
   sig_colors = c(Up = "red", Down = "blue", Not_Significant = "grey70"),
   size_by = "none"
 ) {
-  stopifnot(all(c(logFC_col, pval_col, gene_col) %in% colnames(df)))
+  stopifnot(all(c(logFC_col, pval_col, gene_col) %in% colnames(data)))
   label_mode <- match.arg(label_mode, c("all", "separate"))
   size_by <- match.arg(size_by, c("none", "negLogP", "absLogFC"))
 
@@ -187,4 +187,3 @@ ivolcano <- function(
     p
   }
 }
-
