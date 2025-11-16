@@ -21,7 +21,7 @@ Suggests:
     yulab.utils
 VignetteBuilder:
     quarto
-License: GPL (>= 3)
+License: Artistic-2.0
 URL: https://github.com/YuLab-SMU/ivolcano
 BugReports: https://github.com/YuLab-SMU/ivolcano/issues
 Encoding: UTF-8
