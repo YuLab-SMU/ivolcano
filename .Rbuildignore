@@ -6,3 +6,4 @@ docs
 index.qmd
 ^CRAN-SUBMISSION$
 ^vignettes/*_files$
+README.Rmd
