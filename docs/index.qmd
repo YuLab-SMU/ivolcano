@@ -105,3 +105,130 @@ ivolcano(df,
         top_n=5,
         onclick_fun = onclick_fun)
 ```
+
+## FigureYa 主题火山图
+
+`ivolcano_figureya` 函数提供了基于 FigureYa 标准的火山图主题，支持经典模式和高级模式，可以生成更美观的学术论文级别的火山图。
+
+### 基本用法
+
+```{r figureya-basic, fig.width=10, fig.height=6}
+# 加载示例数据
+f1 <- system.file('extdata/easy_input_limma.rds', package='ivolcano')
+df_limma <- readRDS(f1)
+
+# 基本绘图（高级模式）
+ivolcano_figureya(df_limma, 
+                  logFC_col = "logFC",
+                  pval_col = "P.Value",
+                  gene_col = "X")
+```
+
+### 经典模式 vs 高级模式
+
+经典模式使用简单的颜色和大小设置，高级模式则提供多层次的阈值颜色和大小渐变。
+
+```{r figureya-modes, fig.width=12, fig.height=5, fig.show='hold', out.width='49%'}
+# 经典模式
+p1 <- ivolcano_figureya(df_limma[1:1000,], 
+                        logFC_col = "logFC",
+                        pval_col = "P.Value",
+                        gene_col = "X",
+                        plot_mode = "classic")
+print(p1)
+
+# 高级模式（默认）
+p2 <- ivolcano_figureya(df_limma[1:1000,], 
+                        logFC_col = "logFC",
+                        pval_col = "P.Value",
+                        gene_col = "X",
+                        plot_mode = "advanced")
+print(p2)
+```
+
+### 高亮选定基因
+
+可以指定感兴趣的基因进行高亮显示，并可以按 pathway 进行分组着色。
+
+```{r figureya-selected, fig.width=10, fig.height=6}
+# 加载选定基因数据
+f2 <- system.file('extdata/easy_input_selected.rds', package='ivolcano')
+selected <- readRDS(f2)
+
+# 显示选定基因，并按 pathway 着色
+ivolcano_figureya(df_limma,
+                  logFC_col = "logFC",
+                  pval_col = "P.Value",
+                  gene_col = "X",
+                  selected_genes = selected,
+                  show_pathway = TRUE)
+```
+
+### 自定义颜色和大小
+
+可以自定义点的颜色、大小以及标签的颜色和大小。
+
+```{r figureya-custom, fig.width=10, fig.height=6}
+# 自定义点颜色和大小
+ivolcano_figureya(df_limma[1:1000,],
+                  logFC_col = "logFC",
+                  pval_col = "P.Value",
+                  gene_col = "X",
+                  plot_mode = "advanced",
+                  # 自定义颜色
+                  point_colors = list(up1 = "orange", up2 = "red",
+                                     down1 = "lightblue", down2 = "blue"),
+                  # 自定义大小
+                  point_size_small = 1.5,
+                  point_size_medium = 3,
+                  point_size_large = 5,
+                  # 自定义标签
+                  label_color = "purple",
+                  label_size = 4)
+```
+
+### 交互模式
+
+`ivolcano_figureya` 也支持交互模式，可以悬停查看详细信息或点击触发自定义行为。
+
+```{r figureya-interactive, fig.width=10, fig.height=6, eval=FALSE}
+# 交互模式（在 HTML 输出中可交互）
+ivolcano_figureya(df_limma[1:1000,],
+                  logFC_col = "logFC",
+                  pval_col = "P.Value",
+                  gene_col = "X",
+                  interactive = TRUE,
+                  onclick_fun = onclick_genecards)
+```
+
+### 标记极端值基因
+
+可以自动标记 logFC 值特别大的基因。
+
+```{r figureya-extreme, fig.width=10, fig.height=6}
+# 标记极端 logFC 值的基因
+ivolcano_figureya(df_limma[1:1000,],
+                  logFC_col = "logFC",
+                  pval_col = "P.Value",
+                  gene_col = "X",
+                  label_extreme = TRUE,
+                  extreme_logFC_threshold = 8,
+                  label_color_extreme = "darkred")
+```
+
+### 调整阈值
+
+可以根据需要调整 logFC 和 P 值的阈值。
+
+```{r figureya-threshold, fig.width=10, fig.height=6}
+# 自定义阈值
+ivolcano_figureya(df_limma[1:1000,],
+                  logFC_col = "logFC",
+                  pval_col = "P.Value",
+                  gene_col = "X",
+                  plot_mode = "advanced",
+                  logFCcut = 1.0,      # 基础 logFC 阈值
+                  logFCcut2 = 2.0,     # 第二层 logFC 阈值
+                  pvalCut = 0.01,      # 基础 P 值阈值
+                  pvalCut2 = 0.001)    # 第二层 P 值阈值
+```
