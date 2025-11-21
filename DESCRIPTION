@@ -19,6 +19,8 @@ Imports:
     stats,
     utils
 Suggests:
+    fanyi,
+    org.Hs.eg.db,
     quarto,
     yulab.utils
 VignetteBuilder:

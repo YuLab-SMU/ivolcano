@@ -20,7 +20,13 @@ library(yulab.utils)
 ```
 
 
-## Prepare example data
+## Example Data and Differential Analysis
+
+```{r}
+#| echo: false
+#| include: false
+library(org.Hs.eg.db)
+```
 
 ```{r eval = FALSE}
 library(airway)
@@ -57,7 +63,13 @@ df <- readRDS(f)
 head(df)
 ```
 
-## Interactive volcano plot
+## Interactive Volcano Plot Visualization
+
+By default, it creates an interactive plot. If you pass the parameter `interactive = FALSE`, it will generate a regular static `ggplot` figure.
+
+In the interactive plot, hovering the mouse will display gene name, logFC, and adjusted P values information.
+
+`onclick_fun` parameter can be used to define custom actions when clicking on data points. Here we use the built-in function `onclick_genecards` to open GeneCards page for the clicked gene.
 
 
 
@@ -75,5 +87,151 @@ print(p)
 ```
 
 
-We can use the `r CRANpkg("fanyi")` package to query NCBI gene description and translated to local language to be displayed on the plot, see also <https://yulab-smu.top/ivolcano/>.
+We can also use the `r CRANpkg("fanyi")` package to retrieve gene information from NCBI and display it on the plot. Here we also translate the gene 'summary' information into Chinese. 
+
+```{r}
+library(org.Hs.eg.db)
+df$gene_id <- rownames(df)
+df$entrez <- mapIds(org.Hs.eg.db, 
+                    keys = df$gene_id,
+                    column = "ENTREZID", 
+                    keytype = "ENSEMBL", 
+                    multiVals = "first")
+
+top_eg <- df$entrez[order(df$padj)][1:50]
+
+library(fanyi)
+gs <- gene_summary(top_eg)
+
+# not run, as it required api key
+# see also https://github.com/YuLab-SMU/fanyi
+#
+# gs$summary_cn <- tencent_translate(gs$summary)
+
+head(gs)
+```
+
+Define the `onclick` function to select multiple columns of information for display. Here we use the gene description (full name) and the summary information. The `onclick_fanyi` function will return a function definition according to our requirements, which can be passed to `ivolcano`. 
+
+```{r ivolcano-fanyi, fig.width=10, fig.height=6}
+onclick_fun <- onclick_fanyi(gs, c("description", "summary"))
+
+p2 <- ivolcano(df,
+        logFC_col="log2FoldChange",
+        pval_col="padj",
+        gene_col="symbol",
+        onclick_fun = onclick_fun)
+
+print(p2)
+```
+
+## Point Size Adjustment
+
+
+The `size_by` can be used to adjust the point size based on a specific variable or column in the data frame. Options include "negLogP" for negative log (adjusted) P-values, "absLogFC" for absolute log fold changes, or a column name in the data frame. 
+
+
+```{r ivolcano-point-size, fig.width=10, fig.height=6}
+p3 <- ivolcano(df,
+        logFC_col="log2FoldChange",
+        pval_col="padj",
+        gene_col="symbol",
+        size_by = "negLogP")
+
+print(p3)
+```
+
+
+
+If `size_by` is set to "manual", users can utilize the `point_size` parameter to define the point sizes for different categories. The default setting is `list(base = 2, medium = 4, large = 6)`, where `base` sets the size for non-significant points, `medium` for points meeting both `pval_cutoff` and `logFC_cutoff`, and `large` for points meeting both `pval_cutoff2` and `logFC_cutoff2` if these parameters are provided.
+
+
+```{r ivolcano-point-size-manual, fig.width=10, fig.height=6}
+p4 <- ivolcano(df,
+        logFC_col="log2FoldChange",
+        pval_col="padj",
+        gene_col="symbol",
+        pval_cutoff = 0.05,
+        pval_cutoff2 = 0.01,
+        logFC_cutoff = 1,
+        logFC_cutoff2 = 2,
+        size_by = "manual")
+
+print(p4)
+```
+
+## FigureYa Themed Volcano Plot
+
+The `ivolcano` function integrates the FigureYa themed volcano plot, which can generate more aesthetically pleasing academic publication-level volcano plots. This is mainly achieved by specifying more stringent thresholds through the `pval_cutoff2` and `logFC_cutoff2` parameters, and the function will automatically apply the FigureYa color theme.
+
+
+```{r figureya-basic, fig.width=10, fig.height=6}
+# load example data
+f1 <- system.file('extdata/easy_input_limma.rds', package='ivolcano')
+df_limma <- readRDS(f1)
+
+p5 <- ivolcano(df_limma, 
+        logFC_col = "logFC",
+        pval_col = "P.Value",
+        pval_cutoff = 0.05,
+        pval_cutoff2 = 0.01,
+        logFC_cutoff = 1,
+        logFC_cutoff2 = 2,
+        gene_col = "X")
+print(p5)
+```
+
+## Custom Gene Display and Styles
+
+### Highlight Top Significant Genes
+
+The `ivolcano` function provide functionality for custom gene display. You can use `top_n` to specify displaying the top N most significant genes (by default). By default, it shows the top N most significant upregulated genes and top N most significant downregulated genes (total 2N genes). If you set `label_mode = "all"`, it will display the top N most significant genes including both upregulated and downregulated (total N genes).
+
+### Highlight Selected Genes
+
+If you define the `filter` parameter, it will filter genes based on that condition for display. In this case, the `top_n` parameter will not take effect.
+
+You can specify genes of interest for highlighting.
+
+
+```{r figureya-selected, fig.width=10, fig.height=6}
+# load selected gene data
+f2 <- system.file('extdata/easy_input_selected.rds', package='ivolcano')
+selected <- readRDS(f2)
+genes <- selected[,1]
+genes
+
+# display selected genes
+# here X is the column in our volcano plot data frame that contains gene names
+
+p6 <- ivolcano(df_limma, 
+        logFC_col = "logFC",
+        pval_col = "P.Value",
+        pval_cutoff = 0.05,
+        pval_cutoff2 = 0.01,
+        logFC_cutoff = 1,
+        logFC_cutoff2 = 2,
+        gene_col = "X",
+        filter = 'X %in% genes')
+print(p6)
+```
+
+You can write judgement conditions to filter genes, for example, you can automatically mark genes with particular large LogFC values.
+
+```{r figureya-extreme, fig.width=10, fig.height=6}
+# Mark genes with extreme logFC values
+p7 <- ivolcano(df_limma, 
+        logFC_col = "logFC",
+        pval_col = "P.Value",
+        pval_cutoff = 0.05,
+        pval_cutoff2 = 0.01,
+        logFC_cutoff = 1,
+        logFC_cutoff2 = 2,
+        gene_col = "X",
+        filter = 'logFC > 8')
+        
+print(p7)
+```
+
+
 
