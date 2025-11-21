@@ -2,7 +2,6 @@
 title: "Interactive Volcano Plot"
 format: 
     html:
-        theme: none
         embed-resources: true
         fontsize: 1.1em
         linestretch: 1.7
@@ -65,12 +64,14 @@ head(df)
 ```{r ivocano, fig.width=10, fig.height=6}
 library(ivolcano)
 
-ivolcano(df,
+p <- ivolcano(df,
         logFC_col = "log2FoldChange",
         pval_col = "padj",
         gene_col = "symbol",
         top_n = 5,
         onclick_fun=onclick_genecards)
+
+print(p)
 ```
 
 
