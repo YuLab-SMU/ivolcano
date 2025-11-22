@@ -3,8 +3,8 @@
 print.ivolcano <- function(x, ...) {
   class(x) <- class(x)[-1]
   if (x@plot_env$interactive) {
-    girafe(ggobj = x, options = list(opts_hover(css = "fill:black;r:6")))
-  } else {
-    print(x)
+    x <- girafe(ggobj = x, options = list(opts_hover(css = "fill:black;r:6")))
   }
+
+  print(x)
 }
