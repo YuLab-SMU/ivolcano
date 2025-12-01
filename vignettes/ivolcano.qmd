@@ -71,6 +71,13 @@ In the interactive plot, hovering the mouse will display gene name, logFC, and a
 
 `onclick_fun` parameter can be used to define custom actions when clicking on data points. Here we use the built-in function `onclick_genecards` to open GeneCards page for the clicked gene.
 
+Another options for redirecting to external websites can be:
+
++ `onclick_ensembl` to open Ensembl page for the clicked gene.
++ `onclick_ncbi` to open NCBI page for the clicked gene.
++ `onclick_hgnc` to open HGNC page for the clicked gene.
++ `onclick_uniprot` to open UniProt page for the clicked gene.
++ `onclick_pubmed` to open PubMed page for the clicked gene.
 
 
 ```{r ivocano, fig.width=10, fig.height=6}
