@@ -42,4 +42,4 @@ remotes::install_github("YuLab-SMU/ivolcano")
 ## :book: Vignette
 
 For more details, please refer to the [online
-vignette](https://cran.r-project.org/package=ivolcano/vignettes/ivolcano.html).
+vignette](https://CRAN.R-project.org/package=volcano/vignettes/ivolcano.html).
