@@ -49,4 +49,4 @@ remotes::install_github("YuLab-SMU/ivolcano")
 
 ## :book: Vignette
 
-For more details, please refer to the [online vignette](https://cran.r-project.org/web/packages/ivolcano/vignettes/ivolcano.html).
+For more details, please refer to the [online vignette](https://cran.r-project.org/package=ivolcano/vignettes/ivolcano.html).
