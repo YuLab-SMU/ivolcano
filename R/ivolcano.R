@@ -8,14 +8,15 @@
 #' @export
 #' @examples
 #' # example data
-#' f <- system.file('extdata/airway.rds', package='ivolcano')
+#' f <- system.file("extdata/airway.rds", package = "ivolcano")
 #' df <- readRDS(f)
 #' # plot
 #' ivolcano(df,
-#'         logFC_col = "log2FoldChange",
-#'         pval_col = "padj",
-#'         gene_col = "symbol",
-#'         onclick_fun=onclick_genecards)
+#'   logFC_col = "log2FoldChange",
+#'   pval_col = "padj",
+#'   gene_col = "symbol",
+#'   onclick_fun = onclick_genecards
+#' )
 #' @author Guangchuang Yu
 ivolcano <- function(
   data,
@@ -172,7 +173,7 @@ ivolcano_point <- function(
 
   ylab_pval <- "P-value"
   fmt <- "%s: %s\nlogFC: %.3f\nP.val: %.3e"
-  if (grepl('adj', tolower(pval_col))) {
+  if (grepl("adj", tolower(pval_col))) {
     ylab_pval <- "Adjusted P-value"
     fmt <- "%s: %s\nlogFC: %.3f\nadj.P.val: %.3e"
   }
@@ -229,7 +230,7 @@ ivolcano_point <- function(
   }
 
   point_params <- list(alpha = 0.6)
-  if (size_by != 'none') {
+  if (size_by != "none") {
     if (size_by == "manual") {
       point_size_cat <- setNames(
         c("large", "large", "medium", "medium", "base"),
@@ -237,10 +238,10 @@ ivolcano_point <- function(
       )
       point_size <- setNames(point_size[point_size_cat], names(point_size_cat))
       df$point_size <- unlist(point_size[df$sig])
-      size_by <- 'point_size'
+      size_by <- "point_size"
     }
 
-    if (size_by == 'absLogFC') {
+    if (size_by == "absLogFC") {
       df$absLogFC <- abs(df[[logFC_col]])
     }
     point_params$mapping <- aes(size = !!sym(size_by))
@@ -264,11 +265,15 @@ ivolcano_point <- function(
     coord_cartesian(xlim = xlim) +
     theme_minimal()
 
-  if (size_by == 'point_size') {
+  if (size_by == "point_size") {
     p <- p +
       scale_size_identity()
   }
 
+  p@plot_env$interactive <- interactive
+
   class(p) <- c("ivolcano", class(p))
+
+  #ivolcano_toplot(p)
   return(p)
 }

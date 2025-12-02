@@ -86,14 +86,15 @@ interactive volcano plot
 }
 \examples{
 # example data
-f <- system.file('extdata/airway.rds', package='ivolcano')
+f <- system.file("extdata/airway.rds", package = "ivolcano")
 df <- readRDS(f)
 # plot
 ivolcano(df,
-        logFC_col = "log2FoldChange",
-        pval_col = "padj",
-        gene_col = "symbol",
-        onclick_fun=onclick_genecards)
+  logFC_col = "log2FoldChange",
+  pval_col = "padj",
+  gene_col = "symbol",
+  onclick_fun = onclick_genecards
+)
 }
 \author{
 Guangchuang Yu

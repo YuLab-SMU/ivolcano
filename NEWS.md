@@ -1,5 +1,6 @@
-# ivolcano 0.0.3.001
+# ivolcano 0.0.4
 
++ explicitly call `knitr::knit_print` when running in knitr (2025-12-02, Tue)
 + Add more `onclick` functions (2025-12-01, Mon)
     - onclick_ncbi to open NCBI Gene database.
     - onclick_ensembl to open Ensembl database.

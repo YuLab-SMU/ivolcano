@@ -1,6 +1,6 @@
 Package: ivolcano
 Title: Interactive Volcano Plot
-Version: 0.0.3
+Version: 0.0.4
 Authors@R: c(
        person("Guangchuang", "Yu", 
               email = "guangchuangyu@gmail.com", 
@@ -15,6 +15,7 @@ Imports:
     ggplot2,
     ggiraph,
     ggrepel,
+    knitr,
     rlang,
     stats,
     utils

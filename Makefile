@@ -4,16 +4,15 @@ PKGSRC  := $(shell basename `pwd`)
 
 all: rd check clean
 
-alldocs: rd readme mkdocs
+alldocs: rd readme
+
 
 rd:
 	Rscript -e 'roxygen2::roxygenise(".")'
 
 readme:
-	Rscript -e 'rmarkdown::render("README.Rmd")'
-
-readme2:
-	Rscript -e 'rmarkdown::render("README.Rmd", "html_document")'
+	# Rscript -e 'rmarkdown::render("README.Rmd")'
+	quarto render README.qmd
 
 build: 
 	#cd ..;\
@@ -45,7 +44,3 @@ clean:
 	cd ..;\
 	$(RM) -r $(PKGNAME).Rcheck/
 
-
-index:
-	cd docs;\
-	quarto render index.qmd
