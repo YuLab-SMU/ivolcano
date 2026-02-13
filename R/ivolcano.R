@@ -224,12 +224,24 @@ ivolcano_point <- function(
       aes(
         tooltip = .data$tooltip,
         data_id = !!sym(gene_col),
-        onclick = !!sym("onclick")
+        onclick = !!sym("onclick"),
+        `data-plot` = I("volcano"),
+        `data-pval` = !!sym(pval_col),
+        `data-logfc` = !!sym(logFC_col),
+        `data-sig` = !!sym("sig")
       )
     )
   }
 
   point_params <- list(alpha = 0.6)
+  if (interactive) {
+    point_params$extra_interactive_params <- c(
+      "data-plot",
+      "data-pval",
+      "data-logfc",
+      "data-sig"
+    )
+  }
   if (size_by != "none") {
     if (size_by == "manual") {
       point_size_cat <- setNames(

@@ -8,3 +8,4 @@ index.qmd
 ^vignettes/*_files$
 README.Rmd
 README.qmd
+^pathway_volcano-plan\.md$

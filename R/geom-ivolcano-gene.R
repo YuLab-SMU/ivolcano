@@ -44,6 +44,12 @@ ggplot_add.ivolcano_gene <- function(object, plot, ...) {
   label_sig_only <- object$label_sig_only
   filter <- object$filter
 
+  plot@plot_env$label_top_n <- top_n
+  plot@plot_env$label_mode <- label_mode
+  plot@plot_env$label_sig_only <- label_sig_only
+  plot@plot_env$label_filter <- filter
+  plot@plot_env$label_fontface <- fontface
+
   df_label <- df
   if (label_sig_only) {
     df_label <- dplyr::filter(df, .data$sig != "Not_Significant")
