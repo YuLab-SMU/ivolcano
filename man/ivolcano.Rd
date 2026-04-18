@@ -10,7 +10,10 @@ geom_ivolcano_gene(
   label_mode = "separate",
   fontface = "italic",
   label_sig_only = TRUE,
-  filter = NULL
+  filter = NULL,
+  orgdb_pkg = NULL,
+  orgdb_keytype = "SYMBOL",
+  go_n_each = 2
 )
 
 ivolcano(
@@ -32,7 +35,10 @@ ivolcano(
   label_mode = "separate",
   fontface = "italic",
   label_sig_only = TRUE,
-  filter = NULL
+  filter = NULL,
+  orgdb_pkg = NULL,
+  orgdb_keytype = "SYMBOL",
+  go_n_each = 2
 )
 }
 \arguments{
@@ -47,6 +53,12 @@ otherwise, top_n up-regulated and top_n down-regulated genes will be displayed.}
 \item{label_sig_only}{whether filter significant genes before subset 'top_n' genes}
 
 \item{filter}{custom filter expression to select genes for labeling}
+
+\item{orgdb_pkg}{package for GO annotation.}
+
+\item{orgdb_keytype}{type for gene name.}
+
+\item{go_n_each}{top n GO item to show.}
 
 \item{data}{A data frame that contains minimal information with gene id, logFC and adjusted P values}
 

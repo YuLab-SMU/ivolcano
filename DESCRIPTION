@@ -24,9 +24,11 @@ Imports:
     stats,
     utils
 Suggests:
+    AnnotationDbi,
     clusterProfiler,
     enrichplot,
     fanyi,
+    GO.db,
     org.Hs.eg.db,
     quarto,
     yulab.utils

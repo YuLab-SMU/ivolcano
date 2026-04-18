@@ -37,7 +37,10 @@ ivolcano <- function(
   label_mode = "separate",
   fontface = "italic",
   label_sig_only = TRUE,
-  filter = NULL
+  filter = NULL,
+  orgdb_pkg = NULL,
+  orgdb_keytype = "SYMBOL",
+  go_n_each = 2
 ) {
   p <- ivolcano_point(
     data = data,
@@ -68,8 +71,12 @@ ivolcano <- function(
       label_mode = label_mode,
       fontface = fontface,
       label_sig_only = label_sig_only,
-      filter = filter
+      filter = filter,
+      orgdb_pkg = orgdb_pkg,
+      orgdb_keytype = orgdb_keytype,
+      go_n_each = go_n_each
     )
+
   return(p)
 }
 
