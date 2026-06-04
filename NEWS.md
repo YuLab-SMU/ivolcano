@@ -1,3 +1,10 @@
+# ivolcano 0.0.6
+
++ `ivolcano()` and `ivolcano_point()` gain `tooltip_cols` and `tooltip_labels` parameters,
+  allowing users to display arbitrary columns from the input data frame in the interactive
+  tooltip (e.g., gene biotype, GO terms, functional descriptions joined from external databases). (2026-06-04, Thu)
+
+
 # ivolcano 0.0.5
 
 + `pathway_volcano()` now highlights pathway genes in the volcano plot after selection,

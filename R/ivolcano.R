@@ -4,6 +4,10 @@
 #' @inheritParams ivolcano_point
 #' @inheritParams geom_ivolcano_gene
 #' @param threshold_line customize threshold line style (e.g., line color, type, and width)
+#' @param tooltip_cols extra column names in 'data' to display in tooltip (e.g., c("biotype", "description")).
+#'   When NULL (default), only gene ID, logFC, and p-value are shown.
+#' @param tooltip_labels display labels for the extra columns. If NULL or length differs from tooltip_cols,
+#'   raw column names are used.
 #' @return volcano plot
 #' @export
 #' @examples
@@ -33,6 +37,8 @@ ivolcano <- function(
   size_by = "none",
   point_size = list(base = 2, medium = 4, large = 6),
   threshold_line = list(color = "black", linetype = "dashed", linewidth = 0.5),
+  tooltip_cols = NULL,
+  tooltip_labels = NULL,
   top_n = 10,
   label_mode = "separate",
   fontface = "italic",
@@ -52,7 +58,9 @@ ivolcano <- function(
     pval_cutoff2 = pval_cutoff2,
     logFC_cutoff2 = logFC_cutoff2,
     size_by = size_by,
-    point_size = point_size
+    point_size = point_size,
+    tooltip_cols = tooltip_cols,
+    tooltip_labels = tooltip_labels
   )
 
   p <- p +
@@ -89,6 +97,10 @@ ivolcano <- function(
 #' @param logFC_cutoff2 second cutoff of the logFC values for advanced mode
 #' @param size_by one of "none" (default), "manual" (set by `point_size`), "negLogP", "absLogFC", or other variable in the input data to scale dot sizes.
 #' @param point_size set point size when `size_by` is "manual", a list with three elements: base, medium, large.
+#' @param tooltip_cols extra column names in 'data' to display in tooltip (e.g., c("biotype", "description")).
+#'   When NULL (default), only gene ID, logFC, and p-value are shown.
+#' @param tooltip_labels display labels for the extra columns. If NULL or length differs from tooltip_cols,
+#'   raw column names are used.
 #' @return base plot of a volcano plot
 #' @importFrom dplyr mutate
 #' @importFrom ggplot2 ggplot
@@ -123,9 +135,21 @@ ivolcano_point <- function(
   pval_cutoff2 = NULL,
   logFC_cutoff2 = NULL,
   size_by = "none",
-  point_size = list(base = 2, medium = 4, large = 6)
+  point_size = list(base = 2, medium = 4, large = 6),
+  tooltip_cols = NULL,
+  tooltip_labels = NULL
 ) {
   stopifnot(all(c(logFC_col, pval_col, gene_col) %in% colnames(data)))
+
+  if (interactive && length(tooltip_cols) > 0) {
+    missing_cols <- setdiff(tooltip_cols, colnames(data))
+    if (length(missing_cols) > 0) {
+      stop(
+        "The following tooltip_cols are not found in data: ",
+        paste(missing_cols, collapse = ", ")
+      )
+    }
+  }
   size_by <- match.arg(
     size_by,
     c("none", "negLogP", "absLogFC", "manual", colnames(data))
@@ -203,13 +227,28 @@ ivolcano_point <- function(
     }
 
     # tooltip
-    df$tooltip <- sprintf(
-      fmt,
-      gene_col,
-      df[[gene_col]],
-      df[[logFC_col]],
-      df[[pval_col]]
+    # Resolve display labels for extra columns
+    tooltip_labels_valid <- tooltip_cols
+    if (length(tooltip_cols) > 0 &&
+        length(tooltip_labels) == length(tooltip_cols)) {
+      tooltip_labels_valid <- tooltip_labels
+    }
+
+    if (length(tooltip_cols) > 0) {
+      extra_fmt_lines <- paste0(tooltip_labels_valid, ": %s")
+      extra_fmt <- paste(extra_fmt_lines, collapse = "\n")
+      fmt <- paste0(fmt, "\n", extra_fmt)
+    }
+
+    sprintf_args <- list(
+      fmt, gene_col, df[[gene_col]], df[[logFC_col]], df[[pval_col]]
     )
+    if (length(tooltip_cols) > 0) {
+      for (col in tooltip_cols) {
+        sprintf_args <- c(sprintf_args, list(df[[col]]))
+      }
+    }
+    df$tooltip <- do.call(sprintf, sprintf_args)
   }
 
   aes_args <- aes(

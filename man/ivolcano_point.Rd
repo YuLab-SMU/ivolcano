@@ -17,7 +17,9 @@ ivolcano_point(
   pval_cutoff2 = NULL,
   logFC_cutoff2 = NULL,
   size_by = "none",
-  point_size = list(base = 2, medium = 4, large = 6)
+  point_size = list(base = 2, medium = 4, large = 6),
+  tooltip_cols = NULL,
+  tooltip_labels = NULL
 )
 }
 \arguments{
@@ -46,6 +48,12 @@ ivolcano_point(
 \item{size_by}{one of "none" (default), "manual" (set by \code{point_size}), "negLogP", "absLogFC", or other variable in the input data to scale dot sizes.}
 
 \item{point_size}{set point size when \code{size_by} is "manual", a list with three elements: base, medium, large.}
+
+\item{tooltip_cols}{extra column names in 'data' to display in tooltip (e.g., c("biotype", "description")).
+When NULL (default), only gene ID, logFC, and p-value are shown.}
+
+\item{tooltip_labels}{display labels for the extra columns. If NULL or length differs from tooltip_cols,
+raw column names are used.}
 }
 \value{
 base plot of a volcano plot
