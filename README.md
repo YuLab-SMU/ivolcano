@@ -5,7 +5,7 @@
 
 [![License:
 Artistic-2.0](https://img.shields.io/badge/license-Artistic--2.0-blue.svg)](https://cran.r-project.org/web/licenses/Artistic-2.0)
-[![](https://img.shields.io/badge/devel%20version-0.0.4-blue.svg)](https://github.com/YuLab-SMU/ivolcano)
+[![](https://img.shields.io/badge/devel%20version-0.0.7-blue.svg)](https://github.com/YuLab-SMU/ivolcano)
 [![](https://img.shields.io/github/languages/code-size/YuLab-SMU/ivolcano.svg)](https://github.com/YuLab-SMU/ivolcano)
 [![](https://img.shields.io/github/last-commit/YuLab-SMU/ivolcano.svg)](https://github.com/YuLab-SMU/ivolcano/commits/devel)
 [![](https://www.r-pkg.org/badges/version/ivolcano?color=green.png)](https://cran.r-project.org/package=ivolcano)
