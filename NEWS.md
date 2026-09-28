@@ -1,3 +1,10 @@
+# ivolcano 0.0.7
+
++ Replace the fixed-canvas `pathway_volcano()` view with `pathway_app()`, a
+  Shiny + DT + ggplot2 + ggiraph explorer. Pathway selection in the table
+  highlights the matched gene union in the reactive volcano plot and updates
+  the selected-gene table. (2026-09-28, Mon)
+
 # ivolcano 0.0.6
 
 + `ivolcano()` and `ivolcano_point()` gain `tooltip_cols` and `tooltip_labels` parameters,
