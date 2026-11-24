@@ -43,7 +43,8 @@ ivolcano <- function(
   label_mode = "separate",
   fontface = "italic",
   label_sig_only = TRUE,
-  filter = NULL
+  filter = NULL,
+  label_size = 4
 ) {
   p <- ivolcano_point(
     data = data,
@@ -76,7 +77,8 @@ ivolcano <- function(
       label_mode = label_mode,
       fontface = fontface,
       label_sig_only = label_sig_only,
-      filter = filter
+      filter = filter,
+      label_size = label_size
     )
   return(p)
 }
@@ -197,7 +199,7 @@ ivolcano_point <- function(
 
   ylab_pval <- "P-value"
   fmt <- "%s: %s\nlogFC: %.3f\nP.val: %.3e"
-  if (grepl("adj", tolower(pval_col))) {
+  if (grepl("adj|fdr|q[._]?val(ue)?", tolower(pval_col))) {
     ylab_pval <- "Adjusted P-value"
     fmt <- "%s: %s\nlogFC: %.3f\nadj.P.val: %.3e"
   }

@@ -8,6 +8,7 @@
 #' @param fontface one of 'plain', 'bold', 'italic' (default) and their combination, e.g. 'bold.italic'
 #' @param label_sig_only whether filter significant genes before subset 'top_n' genes
 #' @param filter custom filter expression to select genes for labeling
+#' @param label_size font size of gene labels
 #' @rdname ivolcano
 #' @export
 geom_ivolcano_gene <- function(
@@ -15,7 +16,8 @@ geom_ivolcano_gene <- function(
   label_mode = "separate",
   fontface = "italic",
   label_sig_only = TRUE,
-  filter = NULL
+  filter = NULL,
+  label_size = 4
 ) {
   structure(
     list(
@@ -23,7 +25,8 @@ geom_ivolcano_gene <- function(
       label_mode = label_mode,
       fontface = fontface,
       label_sig_only = label_sig_only,
-      filter = filter
+      filter = filter,
+      label_size = label_size
     ),
     class = "ivolcano_gene"
   )
@@ -43,12 +46,14 @@ ggplot_add.ivolcano_gene <- function(object, plot, ...) {
   fontface <- object$fontface
   label_sig_only <- object$label_sig_only
   filter <- object$filter
+  label_size <- object$label_size
 
   plot@plot_env$label_top_n <- top_n
   plot@plot_env$label_mode <- label_mode
   plot@plot_env$label_sig_only <- label_sig_only
   plot@plot_env$label_filter <- filter
   plot@plot_env$label_fontface <- fontface
+  plot@plot_env$label_size <- label_size
 
   df_label <- df
   if (label_sig_only) {
@@ -80,7 +85,8 @@ ggplot_add.ivolcano_gene <- function(object, plot, ...) {
     box.padding = 0.3,
     max.overlaps = 20,
     bg.colour = "white",
-    bg.r = 0.15
+    bg.r = 0.15,
+    size = label_size
   )
 
   ggplot_add(obj, plot, ...)
