@@ -10,7 +10,8 @@ geom_ivolcano_gene(
   label_mode = "separate",
   fontface = "italic",
   label_sig_only = TRUE,
-  filter = NULL
+  filter = NULL,
+  label_size = 4
 )
 
 ivolcano(
@@ -34,7 +35,8 @@ ivolcano(
   label_mode = "separate",
   fontface = "italic",
   label_sig_only = TRUE,
-  filter = NULL
+  filter = NULL,
+  label_size = 4
 )
 }
 \arguments{
@@ -49,6 +51,8 @@ otherwise, top_n up-regulated and top_n down-regulated genes will be displayed.}
 \item{label_sig_only}{whether filter significant genes before subset 'top_n' genes}
 
 \item{filter}{custom filter expression to select genes for labeling}
+
+\item{label_size}{font size of gene labels}
 
 \item{data}{A data frame that contains minimal information with gene id, logFC and adjusted P values}
 
